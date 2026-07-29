@@ -1,0 +1,373 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-navy-950 text-slate-100 font-sans antialiased overflow-x-hidden min-h-screen selection:bg-skyAccent selection:text-navy-950;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(12, 165, 233, 0.08) 0px, transparent 50%),
+      radial-gradient(at 50% 0%, rgba(16, 185, 129, 0.05) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(28, 37, 65, 0.6) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  .ambient-shell {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .ambient-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(14, 165, 233, 0.08), rgba(16, 185, 129, 0.05));
+    filter: blur(80px);
+    opacity: 0.65;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .ambient-particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .ambient-particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.9), rgba(56, 189, 248, 0.1));
+    box-shadow: 0 0 18px rgba(56, 189, 248, 0.3);
+    opacity: 0.4;
+    animation: drift linear infinite;
+    will-change: transform;
+  }
+
+  .ambient-grid {
+    position: absolute;
+    inset: -12% -25% auto;
+    height: 70%;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 90px 90px;
+    transform: perspective(900px) rotateX(58deg) skewX(-12deg);
+    transform-origin: center top;
+    opacity: 0.15;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
+    animation: waveGrid 16s ease-in-out infinite alternate;
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .ambient-orb {
+    position: absolute;
+    left: -8rem;
+    bottom: -10rem;
+    width: 24rem;
+    height: 24rem;
+    border-radius: 42% 58% 60% 40% / 44% 41% 59% 56%;
+    background: radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.65), rgba(14, 165, 233, 0.12) 36%, transparent 70%);
+    filter: blur(22px);
+    opacity: 0.55;
+    animation: morph 18s ease-in-out infinite alternate;
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform, border-radius;
+  }
+
+  .ambient-orb--secondary {
+    right: -6rem;
+    top: 4rem;
+    left: auto;
+    bottom: auto;
+    width: 20rem;
+    height: 20rem;
+    background: radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.65), rgba(16, 185, 129, 0.1) 42%, transparent 70%);
+    animation-duration: 22s;
+  }
+
+  /* ─── HERO SECTION ANIMATIONS ─────────────────────── */
+
+  /* Hero Airplane fly-through */
+  .hero-airplane {
+    position: absolute;
+    top: 18%;
+    left: -80px;
+    pointer-events: none;
+    z-index: 5;
+    animation: airplane-flythrough 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s 1 forwards;
+    will-change: transform, opacity;
+    filter: drop-shadow(0 0 12px rgba(14, 165, 233, 0.6));
+  }
+
+  /* Animated globe glow (hero) */
+  .hero-globe-glow {
+    background: radial-gradient(circle at center, rgba(14, 165, 233, 0.18) 0%, transparent 70%);
+    animation: globe-breathe 4s ease-in-out infinite alternate;
+    will-change: opacity;
+  }
+
+  /* ─── LOADER COMPONENTS ────────────────────────────── */
+  .loader-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    will-change: transform, opacity;
+  }
+  .loader-orb--sky {
+    width: 300px; height: 300px;
+    top: 10%; left: 10%;
+    background: radial-gradient(circle, rgba(14,165,233,0.35), transparent 70%);
+    animation: morph 8s ease-in-out infinite alternate;
+  }
+  .loader-orb--emerald {
+    width: 250px; height: 250px;
+    bottom: 10%; right: 10%;
+    background: radial-gradient(circle, rgba(16,185,129,0.3), transparent 70%);
+    animation: morph 10s ease-in-out 2s infinite alternate;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-navy-900/40 backdrop-blur-md border border-white/5 shadow-glass rounded-2xl;
+  }
+  
+  .glass-panel-light {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-glass rounded-2xl;
+  }
+
+  .glass-input {
+    @apply bg-navy-950/50 border border-white/10 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-skyAccent focus:border-transparent transition-all duration-300;
+  }
+
+  .glass-btn-primary {
+    @apply bg-skyAccent hover:bg-skyAccent-dark text-navy-950 font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-skyAccent/20 hover:shadow-skyAccent/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-95;
+  }
+
+  .glass-btn-secondary {
+    @apply bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 active:scale-95;
+  }
+
+  .glass-btn-accent {
+    @apply bg-emeraldAccent hover:bg-emeraldAccent-dark text-navy-950 font-semibold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-emeraldAccent/20 hover:shadow-emeraldAccent/40 hover:-translate-y-0.5 active:translate-y-0 active:scale-95;
+  }
+
+  .text-gradient-sky {
+    @apply bg-gradient-to-r from-skyAccent-light to-skyAccent bg-clip-text text-transparent;
+  }
+
+  .text-gradient-emerald {
+    @apply bg-gradient-to-r from-emeraldAccent-light to-emeraldAccent bg-clip-text text-transparent;
+  }
+
+  .text-gradient-dual {
+    @apply bg-gradient-to-r from-skyAccent via-skyAccent-light to-emeraldAccent bg-clip-text text-transparent;
+  }
+
+  /* Feature icon spinner (CSS-only) */
+  .feature-spinner {
+    animation: feature-spin 8s linear infinite;
+    will-change: transform;
+  }
+
+  /* Stat card glow on hover */
+  .stat-card-hover {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .stat-card-hover:hover {
+    box-shadow: 0 0 30px rgba(14,165,233,0.12);
+    transform: translateY(-2px);
+  }
+}
+
+/* ─── Custom Scrollbar ──────────────────────────── */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { @apply bg-navy-950; }
+::-webkit-scrollbar-thumb { @apply bg-navy-800 border-2 border-navy-950 rounded-full hover:bg-navy-700; }
+
+/* ─── Skeleton Shimmer ──────────────────────────── */
+.skeleton { @apply relative overflow-hidden bg-navy-800/40 rounded; }
+.skeleton::after {
+  content: '';
+  @apply absolute inset-0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.045), transparent);
+  transform: translateX(-100%);
+  animation: shimmer 1.6s infinite;
+}
+
+/* ════════════════════════════════════════════════════
+   KEYFRAMES
+════════════════════════════════════════════════════ */
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+@keyframes drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1);          opacity: 0.25; }
+  50%  { transform: translate3d(10px, -25px, 0) scale(1.06); opacity: 0.6;  }
+  100% { transform: translate3d(-14px, -65px, 0) scale(0.9); opacity: 0.15; }
+}
+
+@keyframes waveGrid {
+  0%   { transform: perspective(900px) rotateX(58deg) skewX(-12deg) translateY(0); }
+  100% { transform: perspective(900px) rotateX(62deg) skewX(-9deg) translateY(-16px); }
+}
+
+@keyframes morph {
+  0%   { border-radius: 42% 58% 60% 40% / 44% 41% 59% 56%; transform: translate3d(0,0,0) rotate(0deg); }
+  50%  { border-radius: 50% 50% 45% 55% / 55% 45% 55% 45%; transform: translate3d(18px,-12px,0) rotate(7deg); }
+  100% { border-radius: 58% 42% 49% 51% / 47% 62% 38% 53%; transform: translate3d(-16px,10px,0) rotate(-6deg); }
+}
+
+/* Hero airplane flies from far-left with arc, fades in + out */
+@keyframes airplane-flythrough {
+  0%   { transform: translate(0, 0) rotate(-8deg) scale(0.7);    opacity: 0; }
+  15%  { opacity: 1; }
+  50%  { transform: translate(40vw, -40px) rotate(-5deg) scale(1); opacity: 0.95; }
+  85%  { opacity: 0.6; }
+  100% { transform: translate(105vw, 20px) rotate(3deg) scale(0.8); opacity: 0; }
+}
+
+/* Floating icons: float in + gently oscillate */
+@keyframes icon-float-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes icon-float {
+  0%,100% { transform: translateY(0px); }
+  50%      { transform: translateY(-10px); }
+}
+
+/* Globe breathing glow */
+@keyframes globe-breathe {
+  from { opacity: 0.6; }
+  to   { opacity: 1; }
+}
+
+/* Globe lines animated spin */
+@keyframes globe-lines-spin {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(360deg); }
+}
+
+/* Loader: globe spinning */
+@keyframes globe-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Loader: airplane orbit */
+@keyframes plane-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* SVG city dot pulse */
+@keyframes city-pulse {
+  0%,100% { transform: scale(1);    opacity: 0.9; }
+  50%      { transform: scale(1.45); opacity: 0.5; }
+}
+
+/* SVG flight arc dash animation */
+@keyframes arc-dash {
+  0%   { stroke-dashoffset: 120; opacity: 0; }
+  20%  { opacity: 1; }
+  70%  { stroke-dashoffset: 0;   opacity: 1; }
+  90%  { opacity: 0.2; }
+  100% { stroke-dashoffset: -30; opacity: 0; }
+}
+
+/* SVG endpoint pulse rings */
+@keyframes svg-pulse {
+  0%,100% { transform: scale(1);   opacity: 0.5; }
+  50%      { transform: scale(1.5); opacity: 0;   }
+}
+
+/* Feature card CSS spinner */
+@keyframes feature-spin {
+  from { transform: rotateY(0deg) rotateX(8deg); }
+  to   { transform: rotateY(360deg) rotateX(8deg); }
+}
+
+/* Fly along SVG path (motion-path) */
+@keyframes fly-along-path {
+  from { offset-distance: 0%;   opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  to   { offset-distance: 100%; opacity: 0; }
+}
+
+/* Stagger fade-up for hero words */
+@keyframes word-reveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Glow pulse for feature card icons */
+@keyframes glow-pulse {
+  0%,100% { box-shadow: 0 0 12px rgba(14,165,233,0.2); }
+  50%      { box-shadow: 0 0 28px rgba(14,165,233,0.45); }
+}
+
+/* Stats section number counter highlight */
+@keyframes stat-flash {
+  0%   { color: #38bdf8; }
+  100% { color: inherit; }
+}
+
+/* Destination card reveal */
+@keyframes dest-reveal {
+  from { opacity: 0; transform: scale(0.96) translateY(16px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Bouncy button on CTA */
+@keyframes bounce-short {
+  0%, 100% { transform: translateY(0); }
+  40%       { transform: translateY(-6px); }
+  70%       { transform: translateY(-3px); }
+}
+
+/* Subtle background gradient mesh shift */
+@keyframes mesh-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Slide-down for mobile menu */
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-down { animation: slide-down 0.2s ease-out forwards; }
+.animate-fade-in    { animation: slide-down 0.15s ease-out forwards; }
+.animate-bounce-short { animation: bounce-short 0.6s ease-in-out; }
+
+/* ─── Reduced-motion: respect user preference ─── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
